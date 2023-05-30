@@ -1,12 +1,27 @@
+import fs from 'fs'
+
 import chalk from 'chalk';
 
-const error = chalk.bold.red;
-const warning = chalk.hex('#FFA500');
+function handleError(e){
+    throw new Error(chalk.red(e.code, 'file not found!'))
+}
 
-console.log(chalk.blue('Hello world!'));
+function catchFile(caminhoDoArquivo){
+    const encoding = 'utf-8';
+    fs.promises.readFile(caminhoDoArquivo, encoding)
+        .then((text) => console.log(chalk.green(text)))
+        .catch(handleError)
+}
 
-console.log('olá mundo');
-console.log(chalk.blue.bgRed.bold('São geralmente recuperados a partir de um objeto [FileList](https://developer.mozilla.org/pt-BR/docs/Web/API/FileList) que é retornado como resultado da seleção, pelo usuário, de arquivos através do elemento [<input>](https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/Input), a partir do objeto [DataTransfer](https://developer.mozilla.org/pt-BR/docs/Web/API/DataTransfer) utilizado em operações de arrastar e soltar, ou a partir da API `mozGetAsFile()` em um [HTMLCanvasElement](https://developer.mozilla.org/pt-BR/docs/Web/API/HTMLCanvasElement). Em Gecko, códigos com privilégiios podem criar objetos File representando qualquer arquivo local sem a intereção do usuário (veja [Implementation notes](https://developer.mozilla.org/pt-BR/docs/Web/API/File#implementation_notes) para mais informações.).'));
-console.log(chalk.green('São geralmente recuperados a partir de um objeto' + chalk.red.underline.bold('[FileList](https://developer.mozilla.org/pt-BR/docs/Web/API/FileList)') + 'que é retornado como resultado da seleção, pelo usuário, de arquivos através do elemento [<input>](https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/Input), a partir do objeto [DataTransfer](https://developer.mozilla.org/pt-BR/docs/Web/API/DataTransfer) utilizado em operações de arrastar e soltar, ou a partir da API `mozGetAsFile()` em um [HTMLCanvasElement](https://developer.mozilla.org/pt-BR/docs/Web/API/HTMLCanvasElement). Em Gecko, códigos com privilégiios podem criar objetos File representando qualquer arquivo local sem a intereção do usuário (veja [Implementation notes](https://developer.mozilla.org/pt-BR/docs/Web/API/File#implementation_notes) para mais informações.).'));
-console.log(error('Essa mensagem é de erro!'));
-console.log(warning('Essa mensagem é de perigo!'));
+// function catchFile(caminhoDoArquivo){
+//     const encoding = 'utf-8';
+//     fs.readFile(caminhoDoArquivo, encoding, (error, text) => {
+//         if(error){
+//             handleError(error)
+//         }
+        
+//         console.log(chalk.green(text))
+//     })
+// }
+
+catchFile('./arquivos/texto.md')
