@@ -4,12 +4,25 @@ import catchFile from "./index.js";
 
 const way = process.argv;
 
-function showResult(list){
-    console.log(chalk.yellow('lista de links: '), list)
+function showResult(list, nameArq = ''){
+    console.log(
+        chalk.yellow('lista de links: '), 
+        chalk.black.bgGreen(nameArq), 
+        list
+    )
 }
 
 async function textProcessor(args){
     const someWay = args[2]
+
+    try {
+        fs.lstatSync(someWay)
+    } catch (error) {
+        if(error.code === 'ENOENT'){
+            console.log('arquivo ou diretório não existe')
+            return;
+        }
+    }
 
     if(fs.lstatSync(someWay).isFile()){
         const file = await catchFile(someWay)
@@ -18,7 +31,7 @@ async function textProcessor(args){
         const files = await fs.promises.readdir(someWay)
         files.forEach(async(f) => {
             const result = await catchFile(`${someWay}/${f}`)
-            showResult(result)
+            showResult(result, f)
         });
     }
     
