@@ -17,7 +17,7 @@ async function checkStatus(linksList){
         linksList.map(async (url) => {
             try {
                 const response = await fetch(url)
-                return response.status
+                return `${response.status} - ${response.statusText}`
             } catch (error) {
                 return getErrors(error)
             }

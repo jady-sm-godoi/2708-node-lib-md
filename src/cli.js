@@ -23,7 +23,7 @@ async function showResult(valid, list, nameArq = ''){
 
 async function textProcessor(args){
     const someWay = args[2]
-    const valida = args[3] === '--valida'
+    const valida = args[3] === 'valida'
 
     try {
         fs.lstatSync(someWay)
