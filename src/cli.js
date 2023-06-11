@@ -1,19 +1,29 @@
 import chalk from "chalk";
 import fs from 'fs';
 import catchFile from "./index.js";
+import validList from "./http-validacao.js";
 
 const way = process.argv;
 
-function showResult(list, nameArq = ''){
-    console.log(
-        chalk.yellow('lista de links: '), 
-        chalk.black.bgGreen(nameArq), 
-        list
-    )
+function showResult(valid, list, nameArq = ''){
+    if(valid){
+        console.log(
+            chalk.yellow('lista de links: '), 
+            chalk.black.bgGreen(nameArq), 
+            validList(list)
+        )
+    }else{
+        console.log(
+            chalk.yellow('lista de links: '), 
+            chalk.black.bgGreen(nameArq), 
+            list
+        )
+    }
 }
 
 async function textProcessor(args){
     const someWay = args[2]
+    const valida = args[3] === '--valida'
 
     try {
         fs.lstatSync(someWay)
@@ -26,12 +36,12 @@ async function textProcessor(args){
 
     if(fs.lstatSync(someWay).isFile()){
         const file = await catchFile(someWay)
-        showResult(file)
+        showResult(valida, file)
     } else if(fs.lstatSync(someWay).isDirectory()){
         const files = await fs.promises.readdir(someWay)
         files.forEach(async(f) => {
             const result = await catchFile(`${someWay}/${f}`)
-            showResult(result, f)
+            showResult(valida, result, f)
         });
     }
     
