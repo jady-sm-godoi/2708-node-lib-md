@@ -5,12 +5,12 @@ import validList from "./http-validacao.js";
 
 const way = process.argv;
 
-function showResult(valid, list, nameArq = ''){
+async function showResult(valid, list, nameArq = ''){
     if(valid){
         console.log(
             chalk.yellow('lista de links: '), 
             chalk.black.bgGreen(nameArq), 
-            validList(list)
+            await validList(list)
         )
     }else{
         console.log(
